@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="246.0" prefWidth="214.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leam.cursos.FXMLloginController">
+   <children>
+      <Label layoutX="25.0" layoutY="20.0" text="Usuario" />
+      <TextField fx:id="user" layoutX="25.0" layoutY="37.0" text="rsesma" />
+      <Label layoutX="25.0" layoutY="76.0" text="Contraseña" />
+      <PasswordField fx:id="pswd" layoutX="25.0" layoutY="93.0" />
+      <Button defaultButton="true" layoutX="126.0" layoutY="199.0" mnemonicParsing="false" onAction="#pbAceptar" text="Aceptar" />
+      <Button cancelButton="true" layoutX="25.0" layoutY="199.0" mnemonicParsing="false" onAction="#pbCancelar" text="Cancelar" />
+      <TextField fx:id="server" layoutX="25.0" layoutY="149.0" text="localhost" />
+      <Label layoutX="23.0" layoutY="132.0" text="Servidor" />
+   </children>
+</AnchorPane>
