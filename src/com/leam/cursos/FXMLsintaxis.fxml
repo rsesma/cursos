@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="350.0" prefWidth="635.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leam.cursos.FXMLsintaxisController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Directorio defecto" />
+      <TextField fx:id="cd" layoutX="135.0" layoutY="10.0" prefHeight="25.0" prefWidth="418.0" />
+      <Button layoutX="562.0" layoutY="10.0" mnemonicParsing="false" onAction="#pbDefaultDir" text="..." />
+      <RadioButton fx:id="st1" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" selected="true" text="ST1">
+         <toggleGroup>
+            <ToggleGroup fx:id="Curso" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="st2" layoutX="68.0" layoutY="50.0" mnemonicParsing="false" text="ST2" toggleGroup="$Curso" />
+      <TextField fx:id="total" layoutX="135.0" layoutY="46.0" prefHeight="25.0" prefWidth="54.0" promptText="Total" />
+      <TextField fx:id="preguntas" layoutX="205.0" layoutY="46.0" prefHeight="25.0" prefWidth="71.0" promptText="Preguntas" />
+      <TextField fx:id="excluir" layoutX="291.0" layoutY="46.0" prefHeight="25.0" prefWidth="123.0" promptText="Excluir ítems" />
+      <TextField fx:id="sheet" layoutX="429.0" layoutY="46.0" prefHeight="25.0" prefWidth="123.0" promptText="Hoja de datos Excel" />
+      <TextField fx:id="erase" layoutX="134.0" layoutY="81.0" prefHeight="25.0" prefWidth="418.0" promptText="Archivos a eliminar" />
+      <CheckBox fx:id="p1" layoutX="14.0" layoutY="128.0" mnemonicParsing="false" />
+      <TextField fx:id="n1" layoutX="41.0" layoutY="124.0" prefHeight="25.0" prefWidth="30.0" promptText="n" />
+      <RadioButton fx:id="test1" layoutX="81.0" layoutY="128.0" mnemonicParsing="false" selected="true" text="test">
+         <toggleGroup>
+            <ToggleGroup fx:id="tipo1" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="import1" layoutX="136.0" layoutY="128.0" mnemonicParsing="false" text="import" toggleGroup="$tipo1" />
+      <TextField fx:id="dta1" layoutX="205.0" layoutY="124.0" prefHeight="25.0" prefWidth="90.0" promptText="Datos" />
+      <TextField fx:id="vars1" layoutX="306.0" layoutY="124.0" prefHeight="25.0" prefWidth="123.0" promptText="Variables" />
+      <TextField fx:id="pregs1" layoutX="439.0" layoutY="124.0" prefHeight="25.0" prefWidth="123.0" promptText="Preguntas" />
+      <TextField fx:id="id1" layoutX="572.0" layoutY="124.0" prefHeight="25.0" prefWidth="50.0" promptText="Id" text="Id" />
+      <CheckBox fx:id="p2" layoutX="14.0" layoutY="163.0" mnemonicParsing="false" />
+      <TextField fx:id="n2" layoutX="41.0" layoutY="159.0" prefHeight="25.0" prefWidth="30.0" promptText="n" />
+      <RadioButton fx:id="test2" layoutX="81.0" layoutY="163.0" mnemonicParsing="false" selected="true" text="test">
+         <toggleGroup>
+            <ToggleGroup fx:id="tipo2" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="import2" layoutX="136.0" layoutY="163.0" mnemonicParsing="false" text="import" toggleGroup="$tipo2" />
+      <TextField fx:id="dta2" layoutX="205.0" layoutY="159.0" prefHeight="25.0" prefWidth="90.0" promptText="Datos" />
+      <TextField fx:id="vars2" layoutX="306.0" layoutY="159.0" prefHeight="25.0" prefWidth="123.0" promptText="Variables" />
+      <TextField fx:id="pregs2" layoutX="439.0" layoutY="159.0" prefHeight="25.0" prefWidth="123.0" promptText="Preguntas" />
+      <TextField fx:id="id2" layoutX="572.0" layoutY="159.0" prefHeight="25.0" prefWidth="50.0" promptText="Id" text="Id" />
+      <CheckBox fx:id="p3" layoutX="13.0" layoutY="200.0" mnemonicParsing="false" />
+      <TextField fx:id="n3" layoutX="40.0" layoutY="196.0" prefHeight="25.0" prefWidth="30.0" promptText="n" />
+      <RadioButton fx:id="test3" layoutX="80.0" layoutY="200.0" mnemonicParsing="false" selected="true" text="test">
+         <toggleGroup>
+            <ToggleGroup fx:id="tipo3" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="import3" layoutX="135.0" layoutY="200.0" mnemonicParsing="false" text="import" toggleGroup="$tipo3" />
+      <TextField fx:id="dta3" layoutX="204.0" layoutY="196.0" prefHeight="25.0" prefWidth="90.0" promptText="Datos" />
+      <TextField fx:id="vars3" layoutX="305.0" layoutY="196.0" prefHeight="25.0" prefWidth="123.0" promptText="Variables" />
+      <TextField fx:id="pregs3" layoutX="438.0" layoutY="196.0" prefHeight="25.0" prefWidth="123.0" promptText="Preguntas" />
+      <TextField fx:id="id3" layoutX="571.0" layoutY="196.0" prefHeight="25.0" prefWidth="50.0" promptText="Id" text="Id" />
+      <CheckBox fx:id="p4" layoutX="13.0" layoutY="236.0" mnemonicParsing="false" />
+      <TextField fx:id="n4" layoutX="40.0" layoutY="232.0" prefHeight="25.0" prefWidth="30.0" promptText="n" />
+      <RadioButton fx:id="test4" layoutX="80.0" layoutY="236.0" mnemonicParsing="false" selected="true" text="test">
+         <toggleGroup>
+            <ToggleGroup fx:id="tipo4" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="import4" layoutX="135.0" layoutY="236.0" mnemonicParsing="false" text="import" toggleGroup="$tipo4" />
+      <TextField fx:id="dta4" layoutX="204.0" layoutY="232.0" prefHeight="25.0" prefWidth="90.0" promptText="Datos" />
+      <TextField fx:id="vars4" layoutX="305.0" layoutY="232.0" prefHeight="25.0" prefWidth="123.0" promptText="Variables" />
+      <TextField fx:id="pregs4" layoutX="438.0" layoutY="232.0" prefHeight="25.0" prefWidth="123.0" promptText="Preguntas" />
+      <TextField fx:id="id4" layoutX="571.0" layoutY="232.0" prefHeight="25.0" prefWidth="50.0" promptText="Id" text="Id" />
+      <CheckBox fx:id="p5" layoutX="13.0" layoutY="272.0" mnemonicParsing="false" />
+      <TextField fx:id="n5" layoutX="40.0" layoutY="268.0" prefHeight="25.0" prefWidth="30.0" promptText="n" />
+      <RadioButton fx:id="test5" layoutX="80.0" layoutY="272.0" mnemonicParsing="false" selected="true" text="test">
+         <toggleGroup>
+            <ToggleGroup fx:id="tipo5" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="import5" layoutX="135.0" layoutY="272.0" mnemonicParsing="false" text="import" toggleGroup="$tipo5" />
+      <TextField fx:id="dta5" layoutX="204.0" layoutY="268.0" prefHeight="25.0" prefWidth="90.0" promptText="Datos" />
+      <TextField fx:id="vars5" layoutX="305.0" layoutY="268.0" prefHeight="25.0" prefWidth="123.0" promptText="Variables" />
+      <TextField fx:id="pregs5" layoutX="438.0" layoutY="268.0" prefHeight="25.0" prefWidth="123.0" promptText="Preguntas" />
+      <TextField fx:id="id5" layoutX="571.0" layoutY="268.0" prefHeight="25.0" prefWidth="50.0" promptText="Id" text="Id" />
+      <Button layoutX="555.0" layoutY="307.0" mnemonicParsing="false" onAction="#pbExportar" text="Exportar">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

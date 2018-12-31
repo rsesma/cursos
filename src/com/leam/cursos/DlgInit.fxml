@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="190.0" prefWidth="313.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leam.cursos.DlgInitController">
+   <children>
+      <Label layoutX="25.0" layoutY="20.0" text="Curso" />
+      <RadioButton fx:id="st1" layoutX="25.0" layoutY="43.0" mnemonicParsing="false" selected="true" text="ST1">
+         <toggleGroup>
+            <ToggleGroup fx:id="curso" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="st2" layoutX="83.0" layoutY="43.0" mnemonicParsing="false" text="ST2" toggleGroup="$curso" />
+      <Label layoutX="175.0" layoutY="20.0" text="Período" />
+      <TextField fx:id="periodo" layoutX="177.0" layoutY="39.0" prefHeight="27.0" prefWidth="92.0" />
+      <Label layoutX="25.0" layoutY="82.0" text="Carpeta de trabajo" />
+      <TextField fx:id="folder" layoutX="27.0" layoutY="103.0" prefHeight="27.0" prefWidth="241.0" />
+      <Button layoutX="272.0" layoutY="103.0" mnemonicParsing="false" onAction="#pbFolder" text="..." />
+      <MenuButton layoutX="134.0" layoutY="149.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="167.0" text="Opciones">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#mnuImportar" text="Importar Alumnos">
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="I" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator></MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#mnuEntregaPEC" text="Entrega PEC" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuSintaxis" text="Obtener Sintaxis">
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
+          <MenuItem mnemonicParsing="false" onAction="#mnuExtractPEC1" text="Descomprimir PEC1" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuEntregaPEC1" text="Entrega PEC1" />
+        </items>
+      </MenuButton>
+      <Button cancelButton="true" layoutX="25.0" layoutY="149.0" mnemonicParsing="false" onAction="#pbCancelar" text="Cerrar" />
+   </children>
+</AnchorPane>
