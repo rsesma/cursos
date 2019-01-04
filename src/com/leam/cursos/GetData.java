@@ -3,6 +3,9 @@ package com.leam.cursos;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Properties;
 
 import javafx.scene.control.Alert;
@@ -24,6 +27,83 @@ public class GetData {
             Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
             alert.showAndWait();
             return false;
+        }
+    }
+    
+    public ResultSet getCorrigeRs(String periodo, String curso) {
+    	try {
+            PreparedStatement q;
+            q = conn.prepareStatement("SELECT * FROM corrige WHERE Periodo=? AND Curso=?");
+            q.setString(1, periodo);
+            q.setString(2, curso);
+            return q.executeQuery();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+            return null;
+        }
+    }
+    
+    public ResultSet getCorrigePEC1Rs(String periodo) throws SQLException {
+    	try {
+            PreparedStatement q;
+            q = conn.prepareStatement("SELECT * FROM corrigePEC1 WHERE Periodo=?");
+            q.setString(1, periodo);
+            return q.executeQuery();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+            return null;
+        }
+    }
+    
+    public ResultSet getPreguntasRs(String periodo, String curso) {
+        try {
+            PreparedStatement q;
+            q = conn.prepareStatement("SELECT * FROM pec_estructura WHERE Periodo = ? AND Curso = ?");
+            q.setString(1, periodo);
+            q.setString(2, curso);
+            return q.executeQuery();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+            alert.showAndWait();
+            return null;
+        }
+    }
+    
+    public void insertRespuesta(String periodo, String curso, String dni, String pregunta, String respuesta) {
+        try {
+            PreparedStatement q;
+            q = conn.prepareStatement("INSERT INTO pec_respuestas (Periodo, Curso, DNI, Pregunta, respuesta) VALUES(?, ?, ?, ?, ?)");
+            q.setString(1, periodo);
+            q.setString(2, curso);
+            q.setString(3, dni);
+            q.setString(4, pregunta);
+            q.setString(5, respuesta);
+            q.executeUpdate();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    public void insertPreguntaSol(String periodo, String curso, String pregunta, Integer tipo, String rescor, Float w, String nopc) {
+        try {
+            PreparedStatement q;
+            q = conn.prepareStatement("INSERT INTO pec_estructura (Periodo, Curso, pregunta, tipo, rescor, w, numopc) "
+            		+ "VALUES(?, ?, ?, ?, ?, ?, ?)");
+            q.setString(1, periodo);
+            q.setString(2, curso);
+            q.setString(3, pregunta.substring(1));
+            q.setInt(4, tipo);
+            q.setString(5, rescor);
+            q.setFloat(6, w);
+            if (nopc.equalsIgnoreCase("null")) q.setNull(7, Types.INTEGER); 
+            else q.setInt(7, Integer.parseInt(nopc));
+            q.executeUpdate();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+            alert.showAndWait();
         }
     }
     
@@ -92,6 +172,20 @@ public class GetData {
             q.setString(3, periodo);
             q.setBoolean(4, true);
             q.setBoolean(5, honor);
+            q.executeUpdate();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+            alert.showAndWait();
+        }
+    }
+    
+    public void updatePEC1(String dni, String grupo, Integer notaPEC1) {
+        try {
+            PreparedStatement q;
+            q = conn.prepareStatement("UPDATE alumnos SET PEC1 = ? WHERE DNI = ? AND GRUPO = ?");
+            q.setInt(1, notaPEC1);
+            q.setString(2, dni);
+            q.setString(3, grupo);
             q.executeUpdate();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());

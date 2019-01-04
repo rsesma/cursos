@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leam.cursos.FXMLcorregirPEC1Controller">
+   <children>
+      <TableView fx:id="table" layoutY="-1.0" prefHeight="611.0" prefWidth="652.0" stylesheets="@Alumnos.css">
+         <columns>
+            <TableColumn fx:id="nCol" editable="false" prefWidth="33.0" sortable="false" styleClass="corrige" text="N" />
+            <TableColumn fx:id="periodoCol" editable="false" prefWidth="87.0" sortable="false" styleClass="corrige" text="Periodo" />
+            <TableColumn fx:id="grupoCol" editable="false" prefWidth="77.0" sortable="false" styleClass="corrige" text="Grupo" />
+            <TableColumn fx:id="DNICol" editable="false" prefWidth="98.0" sortable="false" styleClass="corrige" text="DNI" />
+            <TableColumn fx:id="PCCol" editable="true" prefWidth="42.0" sortable="false" styleClass="corrige" text="PC" />
+            <TableColumn fx:id="nameCol" editable="false" prefWidth="243.0" sortable="false" styleClass="corrige" text="Nombre" />
+            <TableColumn fx:id="pecCol" editable="false" prefWidth="48.0" sortable="false" styleClass="notaFin" text="PEC1" />
+         </columns>
+      </TableView>
+      <Label fx:id="ntotal" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="501.0" layoutY="622.0" prefHeight="17.0" prefWidth="137.0" text="Label" textAlignment="RIGHT" />
+      <MenuButton layoutX="20.0" layoutY="617.0" mnemonicParsing="false" text="Operativa">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#mnuAbrePEC" text="Abrir PEC1">
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
+          <MenuItem mnemonicParsing="false" onAction="#mnuNotaPEC" text="Obtener nota">
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="N" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#mnuClose" text="Cerrar ventana">
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="W" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
+        </items>
+      </MenuButton>
+   </children>
+</AnchorPane>

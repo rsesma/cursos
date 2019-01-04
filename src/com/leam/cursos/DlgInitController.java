@@ -1,8 +1,10 @@
 package com.leam.cursos;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -240,43 +242,50 @@ public class DlgInitController implements Initializable {
     
     @FXML
     public void mnuEntregaPEC1(ActionEvent event) {
-        File pecs = new File(this.dir, ST1_PEC1_unzip);		// get PECs folder
-        File[] folders = pecs.listFiles();					// get PEC1 folders
-        for (File folder : folders) {
-            if (folder.isDirectory()) {
-                String dni = folder.getName();            
-                // get list of files for the dni and confirm PEC1 elements
-                boolean foundMdb = false;
-                boolean foundPdf = false;
-                boolean honor = false;
-                File[] listOfFiles = folder.listFiles();
-                for (File file : listOfFiles) {
-                    if (file.isFile()) {
-                        String ext = file.getName().toLowerCase().substring(file.getName().lastIndexOf(".")+1);     //file extension
-                            
-                        // there's a database
-                        if (ext.equals("mdb") || ext.equals("accdb") || ext.equals("odb")) foundMdb = true;
-                            
-                        // there's a pdf form file
-                        if (ext.equals("pdf")) {
-                            foundPdf = true;                                
-                            // open pdf file
-                            try {
-                                PdfReader reader = new PdfReader(file.getAbsolutePath());
-                                AcroFields form = reader.getAcroFields();
-                                // get honor field
-                                if (form.getFields().size()>0) honor = (form.getField("HONOR").equalsIgnoreCase("yes"));
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
-                        }
-                    }
-                }
-                    
-                this.d.entregaPEC1(dni, foundMdb, foundPdf, honor);
-            }
-        }
-            
+    	// get PECs folder
+    	if (this.folder.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "La carpeta de trabajo es necesaria");
+            alert.showAndWait();
+    	} else {
+	        File pecs = new File(this.dir, ST1_PEC1_unzip);		// get PECs folder
+	        File[] folders = pecs.listFiles();					// get PEC1 folders
+	        for (File folder : folders) {
+	            if (folder.isDirectory()) {
+	                String dni = folder.getName();            
+	                // get list of files for the dni and confirm PEC1 elements
+	                boolean foundMdb = false;
+	                boolean foundPdf = false;
+	                boolean honor = false;
+	                File[] listOfFiles = folder.listFiles();
+	                for (File file : listOfFiles) {
+	                    if (file.isFile()) {
+	                        String ext = file.getName().toLowerCase().substring(file.getName().lastIndexOf(".")+1);     //file extension
+	                            
+	                        // there's a database
+	                        if (ext.equals("mdb") || ext.equals("accdb") || ext.equals("odb")) foundMdb = true;
+	                            
+	                        // there's a pdf form file
+	                        if (ext.equals("pdf")) {
+	                            foundPdf = true;                                
+	                            // open pdf file
+	                            try {
+	                                PdfReader reader = new PdfReader(file.getAbsolutePath());
+	                                AcroFields form = reader.getAcroFields();
+	                                // get honor field
+	                                if (form.getFields().size()>0) honor = (form.getField("HONOR").equalsIgnoreCase("yes"));
+	                            } catch (Exception e) {
+	                                Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+	                                alert.showAndWait();
+	                            }
+	                        }
+	                    }
+	                }
+	                    
+	                this.d.entregaPEC1(dni, foundMdb, foundPdf, honor);
+	            }
+	        }
+    	}
+    	
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Proceso finalizado");
         alert.showAndWait();
     }
@@ -307,7 +316,8 @@ public class DlgInitController implements Initializable {
                     alert.setHeaderText(null);
                     alert.showAndWait();
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+                    alert.showAndWait();
                 }
             }    		
     	} else {
@@ -317,21 +327,116 @@ public class DlgInitController implements Initializable {
     }
 
     @FXML
+    public void mnuImportPEC(ActionEvent event) {
+    	String periodo = this.periodo.getText();
+    	String curso = "";
+    	if (this.st1.selectedProperty().getValue()) curso = "ST1";
+    	if (this.st2.selectedProperty().getValue()) curso = "ST2";
+    	if (!periodo.isEmpty()) {
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("Importar estructura de PEC");
+            chooser.setInitialDirectory(new File(System.getProperty("user.home"))); 
+            File file = chooser.showOpenDialog(null);
+            if (file != null) {
+                try {
+                    BufferedReader b = new BufferedReader(new FileReader(file));
+                    String readLine = "";
+                    while ((readLine = b.readLine()) != null) {
+                    	String[] t = readLine.split(",");
+                    	this.d.insertPreguntaSol(periodo, curso,
+                    			t[1].replaceAll("'",""), Integer.parseInt(t[2]), 
+                    			t[3].replaceAll("'",""), Float.parseFloat(t[4]), 
+                    			t[5]);
+                    }
+                    b.close();
+                    
+                    Alert alert = new Alert(AlertType.INFORMATION, "Importación finalizada");
+                    alert.setTitle("Importación finalizada");
+                    alert.setHeaderText(null);
+                    alert.showAndWait();
+                } catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+                    alert.showAndWait();
+                }
+            }    		
+    	} else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Falta el período");
+            alert.showAndWait();
+    	}
+    }    
+    
+    @FXML
     public void mnuSintaxis(ActionEvent event) {
-        try {
-            FXMLLoader fxml = new FXMLLoader(getClass().getResource("FXMLsintaxis.fxml"));
-            Parent r = (Parent) fxml.load();
-            FXMLsintaxisController dlg = fxml.<FXMLsintaxisController>getController();
-            dlg.SetData(dir,(this.st1.selectedProperty().getValue() ? TipoSintaxis.ST1 : TipoSintaxis.ST2));
+    	// get PECs folder
+    	if (this.folder.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "La carpeta de trabajo es necesaria");
+            alert.showAndWait();
+    	} else {
+	    	try {
+	            FXMLLoader fxml = new FXMLLoader(getClass().getResource("FXMLsintaxis.fxml"));
+	            Parent r = (Parent) fxml.load();
+	            FXMLsintaxisController dlg = fxml.<FXMLsintaxisController>getController();
+	            dlg.SetData(dir,(this.st1.selectedProperty().getValue() ? TipoSintaxis.ST1 : TipoSintaxis.ST2));
+	
+	            Stage stage = new Stage();
+	            stage.initModality(Modality.APPLICATION_MODAL);
+	            stage.setScene(new Scene(r));
+	            stage.setTitle("Definir Exportación de Sintaxis");
+	            stage.showAndWait();
+	        } catch(Exception e) {
+	            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+	            alert.showAndWait();
+	        }
+    	}
+    }
+    
+    @FXML
+    public void mnuCorregir(ActionEvent event) {
+    	// get PECs folder
+    	if (this.periodo.getText().isEmpty() || this.folder.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "El período y la carpeta de trabajo son necesarios");
+            alert.showAndWait();
+    	} else {
+	        try {
+	            FXMLLoader fxml = new FXMLLoader(getClass().getResource("FXMLcorregir.fxml"));
+	            Parent r = (Parent) fxml.load();
+	            FXMLcorregirController dlg = fxml.<FXMLcorregirController>getController();
+	            dlg.SetData(this.d, this.dir, this.periodo.getText(), 
+	            		(this.st1.selectedProperty().getValue() ? TipoSintaxis.ST1 : TipoSintaxis.ST2));
+	
+	            Stage stage = new Stage();
+	            stage.setScene(new Scene(r));
+	            stage.setTitle("Corregir");
+	            stage.show();
+	        } catch(Exception e) {
+	            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+	            alert.showAndWait();
+	        }
+    	}
+    }
 
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(r));
-            stage.setTitle("Definir Exportación de Sintaxis");
-            stage.showAndWait();
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
+    @FXML
+    public void mnuCorregirPEC1(ActionEvent event) {
+    	// get PECs folder
+    	if (this.periodo.getText().isEmpty() || this.folder.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "El período y la carpeta de trabajo son necesarios");
+            alert.showAndWait();
+    	} else {
+	        try {
+	            FXMLLoader fxml = new FXMLLoader(getClass().getResource("FXMLcorregirPEC1.fxml"));
+	            Parent r = (Parent) fxml.load();
+	            FXMLcorregirPEC1Controller dlg = fxml.<FXMLcorregirPEC1Controller>getController();
+	            dlg.SetData(this.d, this.dir, this.periodo.getText());
+	
+	            Stage stage = new Stage();
+	            stage.setScene(new Scene(r));
+	            stage.setTitle("Corregir PEC1");
+	            stage.show();
+	        } catch(Exception e) {
+	            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+	            alert.showAndWait();
+	        }
+    	}
     }
     
     public void SetData(GetData d) {

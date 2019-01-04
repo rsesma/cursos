@@ -14,7 +14,7 @@ public class Cursos extends Application {
 
 		GetData d = null;
 		
-		Boolean test = true;
+		Boolean test = false;
 		Boolean ok = false;
 		
 		if (!test) {

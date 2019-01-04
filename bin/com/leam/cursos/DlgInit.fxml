@@ -33,8 +33,15 @@
                   <KeyCodeCombination alt="DOWN" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
                </accelerator>
             </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#mnuImportPEC" text="Importar estructura PEC" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuCorregir" text="Corregir">
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="C" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
           <MenuItem mnemonicParsing="false" onAction="#mnuExtractPEC1" text="Descomprimir PEC1" />
             <MenuItem mnemonicParsing="false" onAction="#mnuEntregaPEC1" text="Entrega PEC1" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuCorregirPEC1" text="Corregir PEC1" />
         </items>
       </MenuButton>
       <Button cancelButton="true" layoutX="25.0" layoutY="149.0" mnemonicParsing="false" onAction="#pbCancelar" text="Cerrar" />
