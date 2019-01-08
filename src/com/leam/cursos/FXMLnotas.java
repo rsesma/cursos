@@ -5,17 +5,13 @@
  */
 package com.leam.cursos;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import org.apache.commons.io.FileUtils;
-
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.PdfReader;
+import com.leam.cursos.Sintaxis.TipoSintaxis;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,14 +27,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author r
  */
-public class FXMLcorregirPEC1Controller implements Initializable {
+public class FXMLnotas implements Initializable {
 
     @FXML
     private TableView<Alumno> table;
@@ -46,6 +41,8 @@ public class FXMLcorregirPEC1Controller implements Initializable {
     private TableColumn<Alumno,String> nCol;
     @FXML
     private TableColumn<Alumno,String> periodoCol;
+    @FXML
+    private TableColumn<Alumno,String> cursoCol;
     @FXML
     private TableColumn<Alumno,String> grupoCol;
     @FXML
@@ -55,7 +52,17 @@ public class FXMLcorregirPEC1Controller implements Initializable {
     @FXML
     private TableColumn<Alumno,String> nameCol;
     @FXML
-    private TableColumn<Alumno,String> pecCol;
+    private TableColumn<Alumno,String> claseCol;
+    @FXML
+    private TableColumn<Alumno,String> pec1Col;    
+    @FXML
+    private TableColumn<Alumno,String> pecCol;    
+    @FXML
+    private TableColumn<Alumno,String> notaCol;    
+    @FXML
+    private TableColumn<Alumno,String> copiaCol;
+    @FXML
+    private TableColumn<Alumno,String> idCopiaCol;
     @FXML
     private TextField search;
     @FXML
@@ -69,17 +76,14 @@ public class FXMLcorregirPEC1Controller implements Initializable {
     
     GetData d;
     String periodo = null;
-    
-    private static final String DESCOMPRIMIDAS = "descomprimidas/";
-    private static final String CORREGIDAS = "corregidas/";
-    
-    File def = null;
-    
+    String curso = null;
+        
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {                
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
     	ImageView imgSearch = new ImageView(new Image(getClass().getResourceAsStream("search.png")));
     	imgSearch.setFitWidth(15);
     	imgSearch.setFitHeight(15);
@@ -90,96 +94,23 @@ public class FXMLcorregirPEC1Controller implements Initializable {
     	imgClean.setFitHeight(15);
         this.btClean.setGraphic(imgClean);
 
-    	// Set up the table
+        // Set up the alumnos table
         this.nCol.setCellValueFactory(new PropertyValueFactory<>("N"));
         this.periodoCol.setCellValueFactory(new PropertyValueFactory<>("Periodo"));
+        this.cursoCol.setCellValueFactory(new PropertyValueFactory<>("Curso"));
         this.grupoCol.setCellValueFactory(new PropertyValueFactory<>("Grupo"));
         this.DNICol.setCellValueFactory(new PropertyValueFactory<>("DNI"));
         this.PCCol.setCellValueFactory(new PropertyValueFactory<>("PC"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        this.pecCol.setCellValueFactory(new PropertyValueFactory<>("PEC1"));
-        
+        this.claseCol.setCellValueFactory(new PropertyValueFactory<>("Clase"));
+        this.pec1Col.setCellValueFactory(new PropertyValueFactory<>("PEC1"));
+        this.pecCol.setCellValueFactory(new PropertyValueFactory<>("PEC"));
+        this.notaCol.setCellValueFactory(new PropertyValueFactory<>("NOTA"));
+        this.copiaCol.setCellValueFactory(new PropertyValueFactory<>("Copia"));
+        this.idCopiaCol.setCellValueFactory(new PropertyValueFactory<>("IDCopia"));
+
         this.table.setEditable(false);
         this.table.setItems(this.data);
-    }
-
-    public void mnuAbrePEC(ActionEvent event) {
-        File source = null;
-        File dest = null;
-        if (Desktop.isDesktopSupported()) {
-        	if (this.table.getSelectionModel().getSelectedIndex()>=0) {
-	            Alumno a = this.table.getItems().get(this.table.getSelectionModel().getSelectedIndex());
-	            if (a != null) {
-	                String dni = a.getDNI();
-	                source = new File(def, DESCOMPRIMIDAS.concat(dni));
-	                dest = new File(def, CORREGIDAS.concat(dni));
-	
-	                try {
-	                    // move files to corregidas path
-	                    FileUtils.moveDirectory(source, dest);
-	
-	                    // open pdf and database file
-	                    File[] list = dest.listFiles();
-	                    for (File f : list) {
-	                        String ext = f.getName().substring(f.getName().lastIndexOf(".")+1);
-	                        if (ext.equalsIgnoreCase("pdf") || ext.equalsIgnoreCase("mdb") || 
-	                                ext.equalsIgnoreCase("accdb") || ext.equalsIgnoreCase("odb")) {
-	                            Desktop.getDesktop().open(f);
-	                        }
-	                    }
-	                } catch (Exception e) {
-	                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-	                    alert.showAndWait();
-	                }
-	            }
-        	}
-        }
-    }
-
-    public void mnuNotaPEC(ActionEvent event) {
-    	if (this.table.getSelectionModel().getSelectedIndex()>=0) {
-	        Alumno a = this.table.getItems().get(this.table.getSelectionModel().getSelectedIndex());
-	        if (a != null) {
-	            String dni = a.getDNI();
-	            File folder = new File(def, CORREGIDAS.concat(dni));
-	            try {
-	                // open pdf and database file
-	                File[] list = folder.listFiles();
-	                for (File f : list) {
-	                    String ext = f.getName().substring(f.getName().lastIndexOf(".")+1);
-	                    if (ext.equalsIgnoreCase("pdf")) {
-	                        // open pdf, get NOTA PEC1 and update server
-	                        PdfReader reader = new PdfReader(f.getAbsolutePath());
-	                        AcroFields form = reader.getAcroFields();
-	                        Integer n = Integer.parseInt(form.getField("NOTA"));
-	                        this.d.updatePEC1(dni, a.getGrupo(), n);
-	                        reader.close();
-	                        
-	                        // update tableview to show new NOTA PEC
-	    	                this.data.removeAll(this.data);
-	    	                this.LoadTable("");
-	
-	                        // select item again
-	                        this.data.forEach((i) -> { 
-	                            if (i.getN().equals(a.getN())) {
-	                                table.getSelectionModel().select(i);
-	                                table.scrollTo(i);
-	                            }
-	                        });
-	                    }
-	                }
-	            } catch (Exception e) {
-	                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-	                alert.showAndWait();
-	            }
-	        }
-    	}
-    }
-    
-    @FXML
-    public void mnuClose(ActionEvent event) {
-        Stage stage = (Stage) this.table.getScene().getWindow();
-        stage.close();
     }
     
     @FXML
@@ -200,17 +131,18 @@ public class FXMLcorregirPEC1Controller implements Initializable {
         LoadTable("");
     }
     
-    public void SetData(GetData d, File dir, String periodo) {
+    public void SetData(GetData d, File dir, String periodo, TipoSintaxis type) {
         this.d = d;
         this.periodo = periodo;
-        def = new File(dir,"ST1/PEC1");
+    	if (type == TipoSintaxis.ST1) this.curso = "ST1";
+    	if (type == TipoSintaxis.ST2) this.curso = "ST2";
         LoadTable("");
     }
-    
+        
     public void LoadTable(String filter) {
         int count = 0;
         try{
-            ResultSet rs = this.d.getCorrigePEC1Rs(this.periodo,filter);
+            ResultSet rs = this.d.getNotasRs(this.periodo,this.curso,filter);
             while(rs.next()){
                 count++;
                 this.data.add(LoadAlumno(rs,count));
@@ -226,16 +158,22 @@ public class FXMLcorregirPEC1Controller implements Initializable {
         Alumno a = new Alumno();
         try {
             a.setPeriodo(rs.getString("Periodo"));
+            a.setCurso(rs.getString("Curso"));
             a.setGrupo(rs.getString("Grupo"));
             a.setDNI(rs.getString("DNI"));
             a.setPC(rs.getString("PC"));
             a.setName(rs.getString("nom"));
+            a.setClase(Notas.getByCode(rs.getString("CLASE")).toString());
             a.setPEC1(rs.getString("PEC1"));
+            a.setPEC(rs.getString("PEC"));
+            a.setNOTA(rs.getString("NOTA"));
+            a.setCopia(rs.getBoolean("Copia"));
+            a.setIDCopia(rs.getString("IDcopia"));
             a.setN(Integer.toString(count));
         } catch(SQLException e){
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
         }
         return a;
-    }    
+    }
 }

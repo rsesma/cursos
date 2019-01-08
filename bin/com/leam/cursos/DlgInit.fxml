@@ -42,6 +42,16 @@
           <MenuItem mnemonicParsing="false" onAction="#mnuExtractPEC1" text="Descomprimir PEC1" />
             <MenuItem mnemonicParsing="false" onAction="#mnuEntregaPEC1" text="Entrega PEC1" />
             <MenuItem mnemonicParsing="false" onAction="#mnuCorregirPEC1" text="Corregir PEC1" />
+            <MenuItem mnemonicParsing="false" onAction="#mnuNotas" text="Notas">
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="N" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#mnuExportar" text="Exportar">
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="E" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
         </items>
       </MenuButton>
       <Button cancelButton="true" layoutX="25.0" layoutY="149.0" mnemonicParsing="false" onAction="#pbCancelar" text="Cerrar" />

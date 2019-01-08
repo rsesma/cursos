@@ -40,5 +40,8 @@
             </MenuItem>
         </items>
       </MenuButton>
+      <TextField fx:id="search" layoutX="127.0" layoutY="618.0" prefHeight="27.0" prefWidth="207.0" promptText="Buscar" />
+      <Button fx:id="btSearch" defaultButton="true" layoutX="342.0" layoutY="619.0" mnemonicParsing="false" onAction="#pbSearch" prefHeight="25.0" prefWidth="25.0" textAlignment="CENTER" />
+      <Button fx:id="btClean" layoutX="377.0" layoutY="619.0" mnemonicParsing="false" onAction="#pbClean" prefHeight="25.0" prefWidth="25.0" />
    </children>
 </AnchorPane>

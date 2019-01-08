@@ -23,10 +23,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
@@ -61,6 +65,12 @@ public class FXMLcorregirController implements Initializable {
     @FXML
     private TableColumn<Alumno,String> idCopiaCol;
     @FXML
+    private TextField search;
+    @FXML
+    private Button btSearch;
+    @FXML
+    private Button btClean;
+    @FXML
     private Label ntotal;
 
     final ObservableList<Alumno> data = FXCollections.observableArrayList();
@@ -76,6 +86,8 @@ public class FXMLcorregirController implements Initializable {
     private static final String Sintaxis = "sintaxis";
 
     File def = null;
+    String periodo = null;
+    String curso = null;
     
     /**
      * Initializes the controller class.
@@ -83,8 +95,17 @@ public class FXMLcorregirController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    	ImageView imgSearch = new ImageView(new Image(getClass().getResourceAsStream("search.png")));
+    	imgSearch.setFitWidth(15);
+    	imgSearch.setFitHeight(15);
+        this.btSearch.setGraphic(imgSearch);
+            
+    	ImageView imgClean = new ImageView(new Image(getClass().getResourceAsStream("no_filter.png")));
+    	imgClean.setFitWidth(15);
+    	imgClean.setFitHeight(15);
+        this.btClean.setGraphic(imgClean);
                 
-        // Set up the alumnos table
+        // Set up the table
         this.nCol.setCellValueFactory(new PropertyValueFactory<>("N"));
         this.periodoCol.setCellValueFactory(new PropertyValueFactory<>("Periodo"));
         this.cursoCol.setCellValueFactory(new PropertyValueFactory<>("Curso"));
@@ -156,7 +177,7 @@ public class FXMLcorregirController implements Initializable {
 	           
 	                // update tableview to show new NOTA PEC
 	                this.data.removeAll(this.data);
-	                this.LoadTable(a.getPeriodo(), curso);
+	                this.LoadTable("");
 	                
 	                // select item again
 	                this.data.forEach((i) -> { 
@@ -204,25 +225,43 @@ public class FXMLcorregirController implements Initializable {
         stage.close();
     }
     
+    @FXML
+    public void pbSearch(ActionEvent event) {
+        String filter = "";
+        if (!this.search.getText().trim().isEmpty()) {
+            filter = "AND (DNI LIKE '%".concat(this.search.getText()).concat("%'");
+            filter = filter.concat(" OR nom LIKE '%").concat(this.search.getText()).concat("%')");
+            this.data.removeAll(this.data);
+            LoadTable(filter);
+        }
+    }
+
+    @FXML
+    public void pbClean(ActionEvent event) {
+        this.data.removeAll(this.data);
+        this.search.setText("");
+        LoadTable("");
+    }    
+    
     public void SetData(GetData d, File dir, String periodo, TipoSintaxis type) {
         this.d = d;
-        String curso = "";
+        this.periodo = periodo;
     	if (type == TipoSintaxis.ST1) {
     		def = new File(dir,ST1+"/PEC2");
-    		curso = ST1;
+    		this.curso = ST1;
     	}
     	if (type == TipoSintaxis.ST2) {
     		def = new File(dir,ST2);
-    		curso = ST2;
+    		this.curso = ST2;
     	}
-        LoadTable(periodo,curso);
+        LoadTable("");
     }
     
     
-    public void LoadTable(String periodo, String curso) {
+    public void LoadTable(String filter) {
         int count = 0;
         try{
-            ResultSet rs = this.d.getCorrigeRs(periodo,curso);
+            ResultSet rs = this.d.getCorrigeRs(this.periodo, this.curso, filter);
             while(rs.next()){
                 count++;
                 this.data.add(LoadAlumno(rs,count));

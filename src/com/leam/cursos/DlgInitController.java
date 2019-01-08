@@ -7,6 +7,12 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -57,7 +63,7 @@ public class DlgInitController implements Initializable {
     private static final String ST1_PEC1_zips = "/ST1/PEC1/comprimidas";
     private static final String ST1_PEC1_unzip = "/ST1/PEC1/descomprimidas";
     private static final String ST1_orig = "/ST1/PEC2/originales";
-    private static final String ST2_orig = "/ST2/originales"; 
+    private static final String ST2_orig = "/ST2/originales";
     
     /**
      * Initializes the controller class.
@@ -436,6 +442,83 @@ public class DlgInitController implements Initializable {
 	            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
 	            alert.showAndWait();
 	        }
+    	}
+    }
+    
+    @FXML
+    public void mnuNotas(ActionEvent event) {
+    	// get PECs folder
+    	if (this.periodo.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "El período es necesario");
+            alert.showAndWait();
+    	} else {
+	        try {
+	            FXMLLoader fxml = new FXMLLoader(getClass().getResource("FXMLnotas.fxml"));
+	            Parent r = (Parent) fxml.load();
+	            FXMLnotas dlg = fxml.<FXMLnotas>getController();
+	            dlg.SetData(this.d, this.dir, this.periodo.getText(), 
+	            		(this.st1.selectedProperty().getValue() ? TipoSintaxis.ST1 : TipoSintaxis.ST2));
+	
+	            Stage stage = new Stage();
+	            stage.setScene(new Scene(r));
+	            stage.setTitle("Notas");
+	            stage.show();
+	        } catch(Exception e) {
+	            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+	            alert.showAndWait();
+	        }
+    	}
+    }    
+    
+    @FXML
+    public void mnuExportar(ActionEvent event) {
+
+    	if (this.folder.getText().isEmpty() || this.periodo.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "La carpeta de trabajo y el período son necesarios");
+            alert.showAndWait();
+    	} else {
+	    	String curso = null;
+	    	if (this.st1.selectedProperty().getValue()) curso = "ST1";
+	    	if (this.st2.selectedProperty().getValue()) curso = "ST2";
+	    	File folder =  new File(this.dir, curso);	    	
+
+	    	List<String> lines = new ArrayList<>();
+	        try {
+	            ResultSet rs = this.d.getDatosPECRs(this.periodo.getText(),curso);
+	            while(rs.next()){
+                    // get pec data
+	            	String c = "'" + rs.getString("ape1") + "','" + rs.getString("ape2") + "','" + 
+                    		rs.getString("nombre") + "','" + rs.getString("DNI") + "'," + 
+                    		rs.getInt("honor") + "," + rs.getString("respuestas");
+                    lines.add(c.replace("'null'", "''"));                    
+	            }
+	            // save PEC data
+	            Files.write(Paths.get(folder.getAbsolutePath() + "/" + curso + "_" + this.periodo.getText() + "_" + "datos_pecs.txt"), 
+	            		lines, Charset.forName("UTF-8"));
+	            
+	            if (curso.equals("ST1")) {
+	    	    	lines = new ArrayList<>();
+		            rs = this.d.getDatosPEC1Rs(this.periodo.getText());
+		            
+		            while(rs.next()){
+	                    // get pec1 data
+		            	String g = rs.getString("Grupo");
+	                    lines.add("'" + rs.getString("DNI") + "';'" + curso + "';'" + 
+		            	          g.substring(3,5) + "';'" + g.substring(5,7) + "';" + rs.getInt("PEC1"));                    
+		            }
+		            // save PEC data
+		            Files.write(Paths.get(folder.getAbsolutePath() + "/" + curso + "_" + this.periodo.getText() + "_" + "datos_pec1.txt"), 
+		            		lines, Charset.forName("UTF-8"));
+	            	
+	            }
+	            
+	            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Exportación finalizada");
+	            alert.showAndWait();
+	        } catch(Exception e) {
+	            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+	            alert.showAndWait();
+	        }
+
     	}
     }
     

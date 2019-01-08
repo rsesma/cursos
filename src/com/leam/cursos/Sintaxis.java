@@ -114,16 +114,18 @@ public class Sintaxis {
                     for(int i=2; i<=this.nTotal; i++){                        
                         // get syntax from the pdf field
                         String p = String.format("%02d",i);
-                        if (!isExcluded(i)) syntax = syntax + "*Pregunta " + p + newline + form.getField("P"+p+"_B" ) + newline + newline;
+                        if (!isExcluded(i)) syntax = syntax + "*Pregunta " + p + newline;
                         
                         Pregunta preg = getPregunta(i);
                         if (preg != null) {
                             switch (preg.tipo) {
                                 case IMPORT:
-                                    syntax = syntax + "import excel " + xls + ", sheet(\"" + preg.data + "\") firstrow clear" + newline + newline;
+                                    syntax = syntax + "import excel " + xls + ", sheet(\"" + preg.data + "\") firstrow clear" + newline + newline +
+                                    		form.getField("P"+p+"_B" ) + newline;
                                     break;
                                 case TEST:
-                                    syntax = syntax + "merge 1:1 " + preg.id + " using \"" + preg.data + ".dta\", nogenerate" + newline + 
+                                    syntax = syntax + form.getField("P"+p+"_B" ) + newline + newline + 
+                                        "merge 1:1 " + preg.id + " using \"" + preg.data + ".dta\", nogenerate" + newline + 
                                         "testvars " + preg.vars + ", p(" + preg.preg + ") id(" + preg.id + ")" + newline;
                                     
                                     switch (this.tipo) {
@@ -136,6 +138,8 @@ public class Sintaxis {
                                     }
                                     break;
                             }
+                        } else {
+                        	syntax = syntax + form.getField("P"+p+"_B" ) + newline + newline;
                         }
                     }
                     reader.close();

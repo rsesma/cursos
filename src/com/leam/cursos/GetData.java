@@ -30,10 +30,38 @@ public class GetData {
         }
     }
     
-    public ResultSet getCorrigeRs(String periodo, String curso) {
+    public ResultSet getCorrigeRs(String periodo, String curso, String filter) {
     	try {
             PreparedStatement q;
-            q = conn.prepareStatement("SELECT * FROM corrige WHERE Periodo=? AND Curso=?");
+            q = conn.prepareStatement("SELECT * FROM corrige WHERE Periodo=? AND Curso=? " + filter);
+            q.setString(1, periodo);
+            q.setString(2, curso);
+            return q.executeQuery();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+            return null;
+        }
+    }
+
+    public ResultSet getNotasRs(String periodo, String curso, String filter) {
+    	try {
+            PreparedStatement q;
+            q = conn.prepareStatement("SELECT * FROM nota_fin WHERE Periodo=? AND Curso=? " + filter);
+            q.setString(1, periodo);
+            q.setString(2, curso);
+            return q.executeQuery();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+            return null;
+        }
+    }    
+
+    public ResultSet getDatosPECRs(String periodo, String curso) {
+    	try {
+            PreparedStatement q;
+            q = conn.prepareStatement("SELECT * FROM datos_pec WHERE Periodo=? AND Curso=?");
             q.setString(1, periodo);
             q.setString(2, curso);
             return q.executeQuery();
@@ -44,10 +72,26 @@ public class GetData {
         }
     }
     
-    public ResultSet getCorrigePEC1Rs(String periodo) throws SQLException {
+    public ResultSet getDatosPEC1Rs(String periodo) {
     	try {
             PreparedStatement q;
-            q = conn.prepareStatement("SELECT * FROM corrigePEC1 WHERE Periodo=?");
+            q = conn.prepareStatement("SELECT a.DNI, a.Grupo, a.PEC1 \n" + 
+            		"FROM alumnos a\n" + 
+            		"	LEFT JOIN entregahonorpec1 e ON (a.DNI = e.DNI)\n" + 
+            		"WHERE Periodo = ? AND Curso = 'ST1' AND e.entregada = 1;");
+            q.setString(1, periodo);
+            return q.executeQuery();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+            return null;
+        }
+    }
+    
+    public ResultSet getCorrigePEC1Rs(String periodo, String filter) throws SQLException {
+    	try {
+            PreparedStatement q;
+            q = conn.prepareStatement("SELECT * FROM corrigePEC1 WHERE Periodo=? " + filter);
             q.setString(1, periodo);
             return q.executeQuery();
         } catch (Exception e) {

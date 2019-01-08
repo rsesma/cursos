@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="908.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leam.cursos.FXMLnotas">
+   <children>
+      <TableView fx:id="table" layoutY="-1.0" prefHeight="611.0" prefWidth="1012.0" stylesheets="@Alumnos.css">
+         <columns>
+            <TableColumn fx:id="nCol" editable="false" prefWidth="33.0" sortable="false" styleClass="corrige" text="N" />
+            <TableColumn fx:id="periodoCol" editable="false" prefWidth="87.0" sortable="false" styleClass="corrige" text="Periodo" />
+            <TableColumn fx:id="cursoCol" editable="false" prefWidth="53.0" sortable="false" styleClass="corrige" text="Curso" />
+            <TableColumn fx:id="grupoCol" editable="false" prefWidth="77.0" sortable="false" styleClass="corrige" text="Grupo" />
+            <TableColumn fx:id="DNICol" editable="false" prefWidth="98.0" sortable="false" styleClass="corrige" text="DNI" />
+            <TableColumn fx:id="PCCol" editable="false" prefWidth="42.0" sortable="false" styleClass="corrige" text="PC" />
+            <TableColumn fx:id="nameCol" editable="false" prefWidth="243.0" sortable="false" styleClass="corrige" text="Nombre" />
+            <TableColumn fx:id="claseCol" editable="false" prefWidth="96.0" sortable="false" styleClass="corrige" text="Clase" />
+            <TableColumn fx:id="pec1Col" editable="false" prefWidth="48.0" sortable="false" styleClass="corrige" text="PEC1" />
+            <TableColumn fx:id="pecCol" editable="false" prefWidth="48.0" sortable="false" styleClass="corrige" text="PEC" />
+            <TableColumn fx:id="notaCol" editable="false" prefWidth="48.0" sortable="false" styleClass="notaFin" text="NOTA" />
+            <TableColumn fx:id="copiaCol" editable="false" prefWidth="51.0" sortable="false" text="Copia" />
+            <TableColumn fx:id="idCopiaCol" editable="false" prefWidth="63.0" sortable="false" text="ID copia" />
+         </columns>
+      </TableView>
+      <Label fx:id="ntotal" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="861.0" layoutY="622.0" prefHeight="17.0" prefWidth="137.0" text="Label" textAlignment="RIGHT" />
+      <TextField fx:id="search" layoutX="14.0" layoutY="625.0" prefHeight="27.0" prefWidth="207.0" promptText="Buscar" />
+      <Button fx:id="btSearch" defaultButton="true" layoutX="229.0" layoutY="626.0" mnemonicParsing="false" onAction="#pbSearch" prefHeight="25.0" prefWidth="25.0" textAlignment="CENTER" />
+      <Button fx:id="btClean" layoutX="264.0" layoutY="626.0" mnemonicParsing="false" onAction="#pbClean" prefHeight="25.0" prefWidth="25.0" />
+   </children>
+</AnchorPane>
