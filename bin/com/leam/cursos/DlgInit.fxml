@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="190.0" prefWidth="313.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leam.cursos.DlgInitController">
+<AnchorPane id="AnchorPane" prefHeight="222.0" prefWidth="313.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.leam.cursos.DlgInitController">
    <children>
       <Label layoutX="25.0" layoutY="20.0" text="Curso" />
       <RadioButton fx:id="st1" layoutX="25.0" layoutY="43.0" mnemonicParsing="false" selected="true" text="ST1">
@@ -16,12 +16,15 @@
          </toggleGroup>
       </RadioButton>
       <RadioButton fx:id="st2" layoutX="83.0" layoutY="43.0" mnemonicParsing="false" text="ST2" toggleGroup="$curso" />
-      <Label layoutX="175.0" layoutY="20.0" text="Período" />
-      <TextField fx:id="periodo" layoutX="177.0" layoutY="39.0" prefHeight="27.0" prefWidth="92.0" />
-      <Label layoutX="25.0" layoutY="82.0" text="Carpeta de trabajo" />
-      <TextField fx:id="folder" layoutX="27.0" layoutY="103.0" prefHeight="27.0" prefWidth="241.0" />
-      <Button layoutX="272.0" layoutY="103.0" mnemonicParsing="false" onAction="#pbFolder" text="..." />
-      <MenuButton layoutX="134.0" layoutY="149.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="167.0" text="Opciones">
+      <RadioButton fx:id="io1" layoutX="25.0" layoutY="73.0" mnemonicParsing="false" text="IO1" toggleGroup="$curso" />
+      <RadioButton fx:id="io2" layoutX="84.0" layoutY="73.0" mnemonicParsing="false" text="IO2" toggleGroup="$curso" />
+      <RadioButton fx:id="io3" layoutX="140.0" layoutY="73.0" mnemonicParsing="false" text="IO3" toggleGroup="$curso" />
+      <Label layoutX="207.0" layoutY="20.0" text="Período" />
+      <TextField fx:id="periodo" layoutX="207.0" layoutY="39.0" prefHeight="27.0" prefWidth="92.0" />
+      <Label layoutX="25.0" layoutY="111.0" text="Carpeta de trabajo" />
+      <TextField fx:id="folder" layoutX="27.0" layoutY="132.0" prefHeight="27.0" prefWidth="241.0" />
+      <Button layoutX="272.0" layoutY="132.0" mnemonicParsing="false" onAction="#pbFolder" text="..." />
+      <MenuButton layoutX="134.0" layoutY="178.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="167.0" text="Opciones">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#mnuImportar" text="Importar Alumnos">
                <accelerator>
@@ -54,6 +57,6 @@
             </MenuItem>
         </items>
       </MenuButton>
-      <Button cancelButton="true" layoutX="25.0" layoutY="149.0" mnemonicParsing="false" onAction="#pbCancelar" text="Cerrar" />
+      <Button cancelButton="true" layoutX="25.0" layoutY="178.0" mnemonicParsing="false" onAction="#pbCancelar" text="Cerrar" />
    </children>
 </AnchorPane>

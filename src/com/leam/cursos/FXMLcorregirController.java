@@ -84,7 +84,10 @@ public class FXMLcorregirController implements Initializable {
     private static final String Originales = "originales";
     private static final String Corregidas = "corregidas";
     private static final String Sintaxis = "sintaxis";
-
+    private static final String IO1 = "IO1";
+    private static final String IO2 = "IO2";
+    private static final String IO3 = "IO3";
+    
     File def = null;
     String periodo = null;
     String curso = null;
@@ -254,6 +257,12 @@ public class FXMLcorregirController implements Initializable {
     		def = new File(dir,ST2);
     		this.curso = ST2;
     	}
+    	if (type == TipoSintaxis.IO1 || type == TipoSintaxis.IO2 || type == TipoSintaxis.IO3) {
+    		def = dir;
+    		if (type == TipoSintaxis.IO1) this.curso = IO1;
+    		if (type == TipoSintaxis.IO2) this.curso = IO2;
+    		if (type == TipoSintaxis.IO3) this.curso = IO3;
+    	}
         LoadTable("");
     }
     
@@ -282,7 +291,8 @@ public class FXMLcorregirController implements Initializable {
             a.setDNI(rs.getString("DNI"));
             a.setPC(rs.getString("PC"));
             a.setName(rs.getString("nom"));
-            a.setClase(Notas.getByCode(rs.getString("CLASE")).toString());
+            String n = rs.getString("CLASE");
+            if (!rs.wasNull()) a.setClase(Notas.getByCode(n).toString());
             a.setPEC(rs.getString("Nota_PEC"));
             a.setCopia(rs.getBoolean("Copia"));
             a.setIDCopia(rs.getString("IDcopia"));

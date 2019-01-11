@@ -34,7 +34,7 @@ public class Sintaxis {
     private static final String newline = System.getProperty("line.separator");
     
     public enum TipoSintaxis {
-        ST1, ST2
+        ST1, ST2, IO1, IO2, IO3
     }
 
     public Sintaxis(TipoSintaxis tipo, int nTotal, int nPregs, String excluidas) {
@@ -135,6 +135,8 @@ public class Sintaxis {
                                         case ST2:
                                             syntax = syntax + "drop _*" + newline + newline;
                                             break;
+										default:
+											break;
                                     }
                                     break;
                             }

@@ -14,7 +14,7 @@ public class Cursos extends Application {
 
 		GetData d = null;
 		
-		Boolean test = false;
+		Boolean test = true;
 		Boolean ok = false;
 		
 		if (!test) {
@@ -33,7 +33,7 @@ public class Cursos extends Application {
 		} else {
 			ok = true;
 	        d = new GetData();
-	        d.getConnection("rsesma","Amsesr.2108","localhost");
+	        d.getConnection("rsesma","Amsesr.2108","192.168.1.10");
 	    }	    
         
         if (ok) {

@@ -191,6 +191,38 @@ public class GetData {
         }
     }
 
+    public void importExcelRowIO(org.apache.poi.ss.usermodel.Row row, String periodo) {
+        try {
+        	String curso = row.getCell(0).getStringCellValue();
+            String grupo = curso + row.getCell(1).getStringCellValue() + row.getCell(2).getStringCellValue();
+            
+            PreparedStatement q;
+            q = conn.prepareStatement("INSERT INTO alumnos "
+            		+ "(Grupo,DNI,nombre,ape1,ape2,provincia,poblacion,email,Periodo,Curso) "
+            		+ " VALUES(?,?,?,?,?,?,?,?,?,?)");
+            q.setString(1,grupo);									// grupo
+            q.setString(2,row.getCell(3).getStringCellValue());		// dni
+            q.setString(3,row.getCell(4).getStringCellValue());		// nombre
+            q.setString(4,row.getCell(5).getStringCellValue());		// ape1
+            if (!row.getCell(6).getStringCellValue().isEmpty()) {
+            	q.setString(5,row.getCell(6).getStringCellValue());	// ape2
+            } else {
+            	q.setNull(5, java.sql.Types.VARCHAR);
+            }
+            q.setString(6,row.getCell(10).getStringCellValue());	// provincia
+            q.setString(7,row.getCell(9).getStringCellValue());		// poblacion
+            q.setString(8,row.getCell(8).getStringCellValue());		// email
+            q.setString(9,periodo);									// periodo
+            q.setString(10,curso);									// curso
+            //System.out.println(q);
+            q.executeUpdate();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    
     public void entregaPEC1(String dni, Boolean mdb, Boolean pdf, Boolean honor) {
         try {
             PreparedStatement q;
