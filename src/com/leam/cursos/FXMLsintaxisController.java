@@ -38,6 +38,8 @@ public class FXMLsintaxisController implements Initializable {
     @FXML
     private RadioButton st2;
     @FXML
+    private RadioButton io1;
+    @FXML
     private TextField total;
     @FXML
     private TextField preguntas;
@@ -155,6 +157,7 @@ public class FXMLsintaxisController implements Initializable {
         
         this.st1.setUserData(TipoSintaxis.ST1);
         this.st2.setUserData(TipoSintaxis.ST2);
+        this.io1.setUserData(TipoSintaxis.IO1);
         
         this.test1.setUserData(TipoPregunta.TEST);
         this.import1.setUserData(TipoPregunta.IMPORT);
@@ -176,6 +179,10 @@ public class FXMLsintaxisController implements Initializable {
     	if (type == TipoSintaxis.ST2) {
     		def = new File(dir,"ST2");
     		this.st2.selectedProperty().set(true);
+    	}
+    	if (type == TipoSintaxis.IO1) {
+    		def = dir;
+    		this.io1.selectedProperty().set(true);
     	}
         this.cd.setText(def.getAbsolutePath());        
     }

@@ -29,8 +29,8 @@ public class Sintaxis {
     
     private static final String ST1_originales = "/PEC2/originales";
     private static final String ST1_sintaxis = "/PEC2/sintaxis/";
-    private static final String ST2_originales = "/originales";
-    private static final String ST2_sintaxis = "/sintaxis/";
+    private static final String ORIGINALES = "/originales";
+    private static final String SINTAXIS = "/sintaxis/";
     private static final String newline = System.getProperty("line.separator");
     
     public enum TipoSintaxis {
@@ -73,13 +73,19 @@ public class Sintaxis {
     public void Exportar() {
         // working folders
         File folder = new File(this.dir);
-        if (this.tipo == TipoSintaxis.ST1) folder = new File(folder, ST1_originales);
-        if (this.tipo == TipoSintaxis.ST2) folder = new File(folder, ST2_originales);
-        
-        String syntax_dir = this.tipo == TipoSintaxis.ST1 ? ST1_sintaxis : ST2_sintaxis;
+        String syntax_dir = null;
+        String xls = null;
+        if (this.tipo == TipoSintaxis.ST1) {
+        	folder = new File(folder, ST1_originales);
+        	syntax_dir = ST1_sintaxis;
+        	xls = "PEC2_ST1.xlsx";
+        }
+        if (this.tipo == TipoSintaxis.ST2 || this.tipo == TipoSintaxis.IO1) {
+        	folder = new File(folder, ORIGINALES);
+        	syntax_dir = SINTAXIS;
+        	if (this.tipo == TipoSintaxis.ST2) xls = "PEC1_ST2.xlsx";
+        }
                 
-        String xls = this.tipo == TipoSintaxis.ST1 ? "PEC2_ST1.xlsx" : "PEC1_ST2.xlsx";
-        
         String[] del = new String[0];
         if (!this.erase.isEmpty()) del = this.erase.split(" ");
         
@@ -98,55 +104,73 @@ public class Sintaxis {
                 try{
                     PdfReader reader = new PdfReader(file.getAbsolutePath());
                     AcroFields form = reader.getAcroFields();
-                
-                    String syntax = "**PEC : " + dni + newline + 
-                            "cd " + this.dir + newline +
-                            "clear" + newline;
-                    if (!this.erase.isEmpty()) {
-                        for (String e : del) {
-                            syntax = syntax + "capture confirm file " + e + ".dta" + newline +
-                                        "if (!_rc) erase " + e + ".dta" + newline;
-                        }
+
+                    String syntax = null;
+                    if (this.tipo == TipoSintaxis.ST1 || this.tipo == TipoSintaxis.ST2) {
+	                    syntax = "**PEC : " + dni + newline + 
+	                            "cd " + this.dir + newline +
+	                            "clear" + newline;
+	                    if (!this.erase.isEmpty()) {
+	                        for (String e : del) {
+	                            syntax = syntax + "capture confirm file " + e + ".dta" + newline +
+	                                        "if (!_rc) erase " + e + ".dta" + newline;
+	                        }
+	                    }
+	                    syntax = syntax +"import excel " + xls + ", sheet(\"" + this.sheet + "\") firstrow" + 
+	                            newline + newline;
+	                
+	                    for(int i=2; i<=this.nTotal; i++){                        
+	                        // get syntax from the pdf field
+	                        String p = String.format("%02d",i);
+	                        if (!isExcluded(i)) syntax = syntax + "*Pregunta " + p + newline;
+	                        
+	                        Pregunta preg = getPregunta(i);
+	                        if (preg != null) {
+	                            switch (preg.tipo) {
+	                                case IMPORT:
+	                                    syntax = syntax + "import excel " + xls + ", sheet(\"" + preg.data + "\") firstrow clear" + newline + newline +
+	                                    		form.getField("P"+p+"_B" ) + newline;
+	                                    break;
+	                                case TEST:
+	                                    syntax = syntax + form.getField("P"+p+"_B" ) + newline + newline + 
+	                                        "merge 1:1 " + preg.id + " using \"" + preg.data + ".dta\", nogenerate" + newline + 
+	                                        "testvars " + preg.vars + ", p(" + preg.preg + ") id(" + preg.id + ")" + newline;
+	                                    
+	                                    switch (this.tipo) {
+	                                        case ST1:
+	                                            syntax = syntax + newline;
+	                                            break;
+	                                        case ST2:
+	                                            syntax = syntax + "drop _*" + newline + newline;
+	                                            break;
+											default:
+												break;
+	                                    }
+	                                    break;
+	                            }
+	                        } else {
+	                        	syntax = syntax + form.getField("P"+p+"_B" ) + newline + newline;
+	                        }
+	                    }
                     }
-                    syntax = syntax +"import excel " + xls + ", sheet(\"" + this.sheet + "\") firstrow" + 
-                            newline + newline;
-                
-                    for(int i=2; i<=this.nTotal; i++){                        
-                        // get syntax from the pdf field
-                        String p = String.format("%02d",i);
-                        if (!isExcluded(i)) syntax = syntax + "*Pregunta " + p + newline;
-                        
-                        Pregunta preg = getPregunta(i);
-                        if (preg != null) {
-                            switch (preg.tipo) {
-                                case IMPORT:
-                                    syntax = syntax + "import excel " + xls + ", sheet(\"" + preg.data + "\") firstrow clear" + newline + newline +
-                                    		form.getField("P"+p+"_B" ) + newline;
-                                    break;
-                                case TEST:
-                                    syntax = syntax + form.getField("P"+p+"_B" ) + newline + newline + 
-                                        "merge 1:1 " + preg.id + " using \"" + preg.data + ".dta\", nogenerate" + newline + 
-                                        "testvars " + preg.vars + ", p(" + preg.preg + ") id(" + preg.id + ")" + newline;
-                                    
-                                    switch (this.tipo) {
-                                        case ST1:
-                                            syntax = syntax + newline;
-                                            break;
-                                        case ST2:
-                                            syntax = syntax + "drop _*" + newline + newline;
-                                            break;
-										default:
-											break;
-                                    }
-                                    break;
-                            }
-                        } else {
-                        	syntax = syntax + form.getField("P"+p+"_B" ) + newline + newline;
-                        }
+                    if (this.tipo == TipoSintaxis.IO1) {
+	                    syntax = "**PEC : " + dni + newline + newline;
+	                    for (int i : this.excl) {
+	                        // get syntax from the pdf field
+	                        String p = String.format("%02d",i);
+	                        syntax = syntax + "*Pregunta " + p + newline;
+	                        syntax = syntax + form.getField("P"+p+"_B" ) + newline + newline;
+	                    }
                     }
                     reader.close();
 
-                    PrintWriter out = new PrintWriter(this.dir + syntax_dir + dni + ".do");
+                    PrintWriter out = null;
+                    if (this.tipo == TipoSintaxis.ST1 || this.tipo == TipoSintaxis.ST2) {
+                    	out = new PrintWriter(this.dir + syntax_dir + dni + ".do");
+                    }                    
+                    if (this.tipo == TipoSintaxis.IO1) {
+                    	out = new PrintWriter(this.dir + syntax_dir + dni + ".txt");
+                    }
                     out.println(syntax);
                     out.close();
                 } catch (Exception e) {

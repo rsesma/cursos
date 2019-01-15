@@ -401,7 +401,12 @@ public class DlgInitController implements Initializable {
 	            FXMLLoader fxml = new FXMLLoader(getClass().getResource("FXMLsintaxis.fxml"));
 	            Parent r = (Parent) fxml.load();
 	            FXMLsintaxisController dlg = fxml.<FXMLsintaxisController>getController();
-	            dlg.SetData(dir,(this.st1.selectedProperty().getValue() ? TipoSintaxis.ST1 : TipoSintaxis.ST2));
+	            TipoSintaxis type = null;
+	            if (this.st1.selectedProperty().getValue()) type = TipoSintaxis.ST1;
+	            if (this.st2.selectedProperty().getValue()) type = TipoSintaxis.ST2;
+	            if (this.io1.selectedProperty().getValue()) type = TipoSintaxis.IO1;
+
+	            dlg.SetData(dir,type);
 	
 	            Stage stage = new Stage();
 	            stage.initModality(Modality.APPLICATION_MODAL);

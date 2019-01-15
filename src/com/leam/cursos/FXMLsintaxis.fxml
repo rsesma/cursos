@@ -88,5 +88,6 @@
             <Font size="13.0" />
          </font>
       </Button>
+      <RadioButton fx:id="io1" layoutX="14.0" layoutY="72.0" mnemonicParsing="false" text="IO1" toggleGroup="$Curso" />
    </children>
 </AnchorPane>

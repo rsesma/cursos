@@ -81,6 +81,7 @@ public class FXMLcorregirController implements Initializable {
     private static final String ST1_pre = "/PEC2_ST1_";
     private static final String ST2 = "ST2";
     private static final String ST2_pre = "/PEC1_ST2_";
+    private static final String IO1_pre = "/PEC_IO1_";
     private static final String Originales = "originales";
     private static final String Corregidas = "corregidas";
     private static final String Sintaxis = "sintaxis";
@@ -134,11 +135,15 @@ public class FXMLcorregirController implements Initializable {
 	                String dni = a.getDNI();
 	                String curso = a.getCurso();
 	                String pre = "";
+	                String ext = "";
 	                if (curso.equalsIgnoreCase("ST1")) pre = ST1_pre;
 	                if (curso.equalsIgnoreCase("ST2")) pre = ST2_pre;
+	                if (curso.equalsIgnoreCase("IO1")) pre = IO1_pre;
+	                if (curso.equalsIgnoreCase("ST1") || curso.equalsIgnoreCase("ST2")) ext = ".do";
+	                if (curso.equalsIgnoreCase("IO1")) ext = ".txt";
 	                File pdfSource = new File(def, Originales + pre + dni + ".pdf");
 	                File pdfDest = new File(def, Corregidas + pre + dni + ".pdf");
-	                File doFile = new File(def, Sintaxis + "/" + dni + ".do");
+	                File doFile = new File(def, Sintaxis + "/" + dni + ext);
 	                try {
 	                	Files.move(pdfSource.toPath(), pdfDest.toPath());
 	                    Desktop.getDesktop().open(pdfDest);
@@ -162,6 +167,7 @@ public class FXMLcorregirController implements Initializable {
 	            String pre = "";
 	            if (curso.equalsIgnoreCase("ST1")) pre = ST1_pre;
 	            if (curso.equalsIgnoreCase("ST2")) pre = ST2_pre;
+	            if (curso.equalsIgnoreCase("IO1")) pre = IO1_pre;
 	            File pdf = new File(def, Corregidas + pre + dni + ".pdf");
 	
 	            try {
@@ -208,6 +214,7 @@ public class FXMLcorregirController implements Initializable {
 	                String pre = "";
 	                if (curso.equalsIgnoreCase("ST1")) pre = ST1_pre;
 	                if (curso.equalsIgnoreCase("ST2")) pre = ST2_pre;
+	                if (curso.equalsIgnoreCase("IO1")) pre = IO1_pre;
 	                File pdf = new File(def, Corregidas + pre + dni + ".pdf");
 
 	                try {
