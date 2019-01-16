@@ -136,7 +136,10 @@ public class FXMLnotas implements Initializable {
         this.periodo = periodo;
     	if (type == TipoSintaxis.ST1) this.curso = "ST1";
     	if (type == TipoSintaxis.ST2) this.curso = "ST2";
-        LoadTable("");
+    	if (type == TipoSintaxis.IO1) this.curso = "IO1";
+    	if (type == TipoSintaxis.IO2) this.curso = "IO2";
+    	if (type == TipoSintaxis.IO3) this.curso = "IO3";
+    	LoadTable("");
     }
         
     public void LoadTable(String filter) {
@@ -163,7 +166,8 @@ public class FXMLnotas implements Initializable {
             a.setDNI(rs.getString("DNI"));
             a.setPC(rs.getString("PC"));
             a.setName(rs.getString("nom"));
-            a.setClase(Notas.getByCode(rs.getString("CLASE")).toString());
+            String n = rs.getString("CLASE");
+            if (!rs.wasNull()) a.setClase(Notas.getByCode(n).toString());
             a.setPEC1(rs.getString("PEC1"));
             a.setPEC(rs.getString("PEC"));
             a.setNOTA(rs.getString("NOTA"));

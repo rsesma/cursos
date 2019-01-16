@@ -422,7 +422,6 @@ public class DlgInitController implements Initializable {
     
     @FXML
     public void mnuCorregir(ActionEvent event) {
-    	// get PECs folder
     	TipoSintaxis type = null;
     	if (this.st1.selectedProperty().getValue()) type = TipoSintaxis.ST1;
     	if (this.st2.selectedProperty().getValue()) type = TipoSintaxis.ST2;
@@ -452,7 +451,6 @@ public class DlgInitController implements Initializable {
 
     @FXML
     public void mnuCorregirPEC1(ActionEvent event) {
-    	// get PECs folder
     	if (this.periodo.getText().isEmpty() || this.folder.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "El período y la carpeta de trabajo son necesarios");
             alert.showAndWait();
@@ -476,7 +474,12 @@ public class DlgInitController implements Initializable {
     
     @FXML
     public void mnuNotas(ActionEvent event) {
-    	// get PECs folder
+    	TipoSintaxis type = null;
+    	if (this.st1.selectedProperty().getValue()) type = TipoSintaxis.ST1;
+    	if (this.st2.selectedProperty().getValue()) type = TipoSintaxis.ST2;
+    	if (this.io1.selectedProperty().getValue()) type = TipoSintaxis.IO1;
+    	if (this.io2.selectedProperty().getValue()) type = TipoSintaxis.IO2;
+    	if (this.io3.selectedProperty().getValue()) type = TipoSintaxis.IO3;
     	if (this.periodo.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "El período es necesario");
             alert.showAndWait();
@@ -485,8 +488,7 @@ public class DlgInitController implements Initializable {
 	            FXMLLoader fxml = new FXMLLoader(getClass().getResource("FXMLnotas.fxml"));
 	            Parent r = (Parent) fxml.load();
 	            FXMLnotas dlg = fxml.<FXMLnotas>getController();
-	            dlg.SetData(this.d, this.dir, this.periodo.getText(), 
-	            		(this.st1.selectedProperty().getValue() ? TipoSintaxis.ST1 : TipoSintaxis.ST2));
+	            dlg.SetData(this.d, this.dir, this.periodo.getText(),type);
 	
 	            Stage stage = new Stage();
 	            stage.setScene(new Scene(r));
@@ -509,7 +511,12 @@ public class DlgInitController implements Initializable {
 	    	String curso = null;
 	    	if (this.st1.selectedProperty().getValue()) curso = "ST1";
 	    	if (this.st2.selectedProperty().getValue()) curso = "ST2";
-	    	File folder =  new File(this.dir, curso);	    	
+	    	if (this.io1.selectedProperty().getValue()) curso = "IO1";
+	    	if (this.io2.selectedProperty().getValue()) curso = "IO2";
+	    	if (this.io3.selectedProperty().getValue()) curso = "IO3";
+	    	File folder = null;
+	    	if (this.st1.selectedProperty().getValue() || this.st2.selectedProperty().getValue()) folder =  new File(this.dir, curso);
+	    	else folder = this.dir;
 
 	    	List<String> lines = new ArrayList<>();
 	        try {
