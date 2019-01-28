@@ -33,7 +33,7 @@ public class Cursos extends Application {
 		} else {
 			ok = true;
 	        d = new GetData();
-	        d.getConnection("rsesma","Amsesr.2108","192.168.1.10");
+	        d.getConnection("","","","");
 	    }	    
         
         if (ok) {

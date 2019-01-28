@@ -14,9 +14,9 @@ public class GetData {
     private static final String C_DRIVER = "jdbc:mysql";
     private static Connection conn = null;
 
-    public Boolean getConnection(String user, String pswd, String server) {
+    public Boolean getConnection(String user, String pswd, String server, String db) {
         try {
-            String url = C_DRIVER + "://" + server + ":3306/alumnos";
+            String url = C_DRIVER + "://" + server + ":3306/" + db;
             Properties info = new Properties();
             info.setProperty("user", user);
             info.setProperty("password", pswd);

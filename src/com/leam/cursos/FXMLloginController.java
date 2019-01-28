@@ -18,6 +18,8 @@ public class FXMLloginController implements Initializable {
     private PasswordField pswd;
     @FXML
     private TextField server;
+    @FXML
+    private TextField db;
     
     public GetData d;
     public Boolean ok = false;
@@ -33,7 +35,7 @@ public class FXMLloginController implements Initializable {
     
     @FXML
     void pbAceptar(ActionEvent event) {
-        if (this.d.getConnection(this.user.getText(),this.pswd.getText(),this.server.getText())) {
+        if (this.d.getConnection(this.user.getText(),this.pswd.getText(),this.server.getText(),this.db.getText())) {
             this.ok = true;
             closeWindow();
         }
